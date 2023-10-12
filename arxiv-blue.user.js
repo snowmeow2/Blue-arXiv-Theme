@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Blue arXiv Theme
-// @namespace    https://github.com/snowmeow2
-// @version      1.0
+// @namespace    https://github.com/snowmeow2/Blue-arXiv-Theme
+// @version      1.1
 // @description  Customize the appearance of arXiv website
 // @author       snowmeow2
 // @match        https://arxiv.org/*
@@ -54,6 +54,13 @@
         logoCornell.style.visibility = 'hidden';
     }
 
-    // Replace all text instances of "arXiv" with "Blue arXiv"
-    document.body.innerHTML = document.body.innerHTML.replace(/arXiv/g, 'Blue arXiv');
+    // Replace all text instances of "arXiv" with "Blue arXiv" except URL
+    function replaceTextInNode(node) {
+        if (node.nodeType === Node.TEXT_NODE) {
+            node.nodeValue = node.nodeValue.replace(/arXiv/g, 'Blue arXiv');
+        } else {
+            node.childNodes.forEach(replaceTextInNode);
+        }
+    }
+    replaceTextInNode(document.body);
 })();
