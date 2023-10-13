@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Blue arXiv Theme
 // @namespace    https://github.com/snowmeow2/Blue-arXiv-Theme
-// @version      1.1
+// @version      1.2
 // @description  Customize the appearance of arXiv website
 // @author       snowmeow2
 // @match        https://arxiv.org/*
@@ -13,14 +13,22 @@
     // Use custom css
     const style = document.createElement('style');
     style.innerHTML = `
+    #content, .content {
+        margin: 0em 1em 0em 1em;
+        border-radius: 15px;
+        padding: 1em 2em 1em 2em;
+        filter: drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.3));
+        background-color: #fff;
+    }
     #header {
-        background: linear-gradient(90deg, rgb(255, 255, 255), rgb(20, 100, 220), rgb(20, 100, 220));
+        background: transparent;
+        border-bottom: 0px;
     }
     .mobile-header {
-        background: linear-gradient(90deg, rgb(255, 255, 255), rgb(20, 100, 220), rgb(20, 100, 220));
+        background: transparent;
     }
     .identity {
-        background: linear-gradient(90deg, rgb(255, 255, 255), rgb(20, 100, 220), rgb(20, 100, 220));
+        background: transparent;
     }
     .header-breadcrumbs {
         color: black !important;
@@ -32,17 +40,55 @@
         border-left: 0px !important;
         border-right: 0px !important;
     }
+    #abs-outer .subheader {
+        background: transparent;
+    }
+    #abs-outer .extra-services {
+        margin: 1em 0em 0em 0em;
+    }
+    .extra-services {
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+        border-radius: 15px;
+    }
+    .full-text, .browse, .extra-ref-cite, .extra-general {
+        border-left: 0px;
+        border-bottom: 1px solid #ccc;
+    }
+    .bookmarks {
+        border-left: 0px;
+        border-bottom: 0px;
+    }
+    footer {
+        background: transparent;
+        margin-top: 2.5rem;
+    }
+    footer > .columns {
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+        border-radius: 15px;
+    }
+    footer ul li {
+        justify-content: center;
+    }
     `;
     document.head.appendChild(style);
+
+    const content_element = document.getElementById('content');
+    const content_class = document.getElementsByClassName('content');
+    if (content_element || content_class) {
+        let body = document.body;
+        body.style.background = 'linear-gradient(90deg, rgba(255, 255, 255, 1), rgba(20, 100, 220, 0.75), rgba(20, 100, 220, 1)), url("https://p2.bahamut.com.tw/B/2KU/50/1940acba5a56b975233e7e53521e9aq5.JPG")';
+        body.style.backgroundSize = 'cover';
+        body.style.backgroundRepeat = 'no-repeat';
+        body.style.backgroundPosition = 'center';
+        body.style.backgroundAttachment = 'fixed';
+        body.style.height = 'auto';
+    }
 
     // Replace the logo image
     const logoImg = document.querySelector('img[alt="arxiv logo"]');
     if (logoImg) {
         logoImg.src = 'https://i.imgur.com/ZkreQPV.png';
-        // check the url: If it is the homepage, don't resize the logo
-        if (!(window.location.href === 'https://arxiv.org/')) {
-            logoImg.style.width = '125px';
-        }
         logoImg.style.margin = '0px';
     }
     const logoImg2 = document.querySelector('img[alt="arXiv logo"]');
@@ -63,4 +109,11 @@
         }
     }
     replaceTextInNode(document.body);
+
+    // replace the favicon
+    const link = document.querySelectorAll("link[rel*='icon']");
+    link.forEach(el => {
+        el.href = 'https://play-lh.googleusercontent.com/k-BmewE1HZ4hrF9E9ABVvANeu1dBI5Bya0ttg8KiFGam_NpbmRqmFL4zz_RjgHbojA=s128-rw';
+    });
+
 })();
